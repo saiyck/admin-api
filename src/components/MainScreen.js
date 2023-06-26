@@ -18,9 +18,12 @@ import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
 import './MainScreen.css';
+import { handlePostPrompt } from '../Common';
 export default function MainScreen() {
     const [open, setOpen] = React.useState(false);
     const [copy, setCopy] = React.useState(false);
+    const [message,setMessage] = React.useState('');
+    const [id,setId] = React.useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleCopyText = (text) => {
@@ -28,6 +31,20 @@ export default function MainScreen() {
         setCopy(true)
         handleClose()
     }
+
+    const handleSubmit = () => {
+      if(message != ''){
+        handlePostPrompt(message).then((res)=>{
+          console.log('response',res);
+          setId(res.data._id);
+          handleOpen()
+        }).catch((err)=> {
+            console.log('error:',err);
+        })
+      }
+    }
+
+
     return (
         <>
             <CssBaseline />
@@ -65,9 +82,10 @@ export default function MainScreen() {
                                     rows={6}
                                     placeholder="Please enter prompt message"
                                     fullWidth
+                                    onChange={(e)=> setMessage(e.target.value)}
                                 />
                                 <CardActions sx={{ mt: 2 }}>
-                                    <Button onClick={handleOpen} variant='contained' size="small">Create Test Link</Button>
+                                    <Button onClick={handleSubmit} variant='contained' size="small">Create Test Link</Button>
                                 </CardActions>
                             </CardContent>
                         </Card>
@@ -86,7 +104,7 @@ export default function MainScreen() {
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                             please click on below url to copy
                         </Typography>
-                        <Button onClick={() => handleCopyText('http://localhost:3000?id=abhdc54bdjd32ndjjd333')} size="small">http://localhost:3000?id=abhdc54bdjd32ndjjd333</Button>
+                        <Button onClick={() => handleCopyText(`${process.env.REACT_APP_USER_APP_URL}?id=${id}`)} size="small">{`${process.env.REACT_APP_USER_APP_URL}?id=${id}`}</Button>
                     </Box>
                 </Modal>
                 <Snackbar
