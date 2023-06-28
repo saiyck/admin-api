@@ -1,7 +1,8 @@
 import './App.css';
 import {createTheme,ThemeProvider} from '@mui/material/styles'
 import MainScreen from './components/MainScreen';
-
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import ViewUserConversation from './components/ViewUserConversation/ViewUserConversation';
 
 const defaultTheme = createTheme();
 
@@ -11,9 +12,12 @@ function App() {
   // const name = queryParameters.get("name")
   return (
     <ThemeProvider theme={defaultTheme}>
-    <div className="App">
-      <MainScreen/>
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path='/' element={<MainScreen/>}/>
+      <Route path='/view' element={<ViewUserConversation/>}/>
+    </Routes>
+    </BrowserRouter>
     </ThemeProvider>
   );
 }

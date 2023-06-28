@@ -14,11 +14,11 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Snackbar from '@mui/material/Snackbar';
 import './MainScreen.css';
 import { handlePostPrompt } from '../Common';
+import {Link} from 'react-router-dom';
 export default function MainScreen() {
     const [open, setOpen] = React.useState(false);
     const [copy, setCopy] = React.useState(false);
@@ -41,6 +41,8 @@ export default function MainScreen() {
         }).catch((err)=> {
             console.log('error:',err);
         })
+      }else{
+        window.alert('Please enter prompt message!');
       }
     }
 
@@ -49,10 +51,15 @@ export default function MainScreen() {
         <>
             <CssBaseline />
             <AppBar position="relative">
-                <Toolbar>
+                <Toolbar sx={{display:'flex',justifyContent:'space-between'}}>
                     <Typography variant="h6" color="inherit" noWrap>
                         Admin Portal
                     </Typography>
+                    <Link to='/view' style={{ textDecoration: 'none',color:'white' }}>
+                    <Typography variant="h6" color="inherit" noWrap>
+                       View
+                    </Typography>
+                    </Link>
                 </Toolbar>
             </AppBar>
             <main>
