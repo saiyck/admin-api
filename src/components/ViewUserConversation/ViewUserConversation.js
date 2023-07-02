@@ -8,16 +8,22 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import { getAllUserInfo } from '../../Common';
 import { Box } from '@mui/material';
 export default function ViewUserConversation() {
   const [list,setList] = React.useState([]);
   const [messages,setMessage] = React.useState([]);
+  const [open,setOpen] = React.useState(false);
   React.useEffect(()=>{
+    setOpen(true)
     getAllUserInfo().then((res)=>{
        setList(res.data);
+       setOpen(false)
     }).catch((err)=>{
         console.log('err:',err)
+        setOpen(false)
     })
   },[])
 
@@ -59,7 +65,8 @@ export default function ViewUserConversation() {
   </ListItem> */}
 </List>
 </Grid>
-<Grid item xs={7} height={'100vh'} bgcolor={'lightgray'}>
+{messages.length > 0 ? 
+  <Grid item xs={7} sx={{height: '100vh', overflow: 'auto',padding:1}} bgcolor={'lightgray'}>
  {
     messages.map((item)=>{
         return(
@@ -69,8 +76,16 @@ export default function ViewUserConversation() {
         )
     })
  }                
+</Grid> : null
+}
 </Grid>
-</Grid>
+<Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={open}
+        onClick={()=> {}}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
             </main>
         </>
     )
